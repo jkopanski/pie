@@ -1,0 +1,33 @@
+{
+  "name": "tree-sitter-pie",
+  "version": "0.0.1",
+  "description": "tree-sitter grammar for Pie",
+  "main": "bindings/node",
+  "keywords": [
+    "parser",
+    "lexer"
+  ],
+  "scripts": {
+    "generate": "tree-sitter generate",
+    "highlight": "tree-sitter highlight",
+    "parse": "tree-sitter parse",
+    "test": "tree-sitter test"
+  },
+  "author": "Jakub Kopański <jakub@famisoft.pl>",
+  "repository": "https://github.com/jkopanski/pie",
+  "license": "MIT",
+  "dependencies": {
+    "nan": "^2.15.0"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": "^0.20.8"
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.pie",
+      "file-types": [
+        "pie"
+      ]
+    }
+  ]
+}

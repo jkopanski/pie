@@ -1,0 +1,53 @@
+* Pie language
+This is my implementation of the Pie language, as described (mostly)
+in [[https://thelittletyper.com][The Little Typer]] by Daniel P. Friedman and David Tharne
+Christiansen.  With additional goal of learning Rust.
+
+** Building
+Projects follows standard Rust conventions and is buildable via cargo.
+However parser is utilizing [[https://tree-sitter.github.io/tree-sitter/][tree sitter]] and grammar definition for the
+Pie language is kept in the =tree-sitter-pie= directory.  One can
+regenerate grammar generated source by running =tree-sitter generate= in
+the grammar directory.  Those artifacts are kept under version
+control, so it's not necessary to generate them if no changes to
+language grammar definition are made.
+
+*** =pie= executable
+=pie= is your typical compiler executable.  Point it to your source file
+and it will try to normalise expressions within.
+
+*** =repl= executable
+Besides standard compiler, project provides /read, evaluate, print loop/
+kind of program for easier experimentation with the language.
+
+*** library
+Executables are just thin programs that make use of the library
+modules, found in the =lib/= directory.
+
+** Nix shell
+Project contains [[https://zero-to-nix.com/concepts/flakes][nix flake]], for reproducible building and providing development shell, with all the necessary dependencies.  It's not required to use it, but I think it makes life a lot easier.  One can enter development shell by running:
+
+#+begin_src sh
+nix develop
+#+end_src
+
+In the project root directory.  There is additional shell, tailored to the development of language grammar.  One can enter it by executing:
+
+#+begin_src sh
+nix develop tree-sitter
+#+end_src
+
+*** =direnv= config
+In order to enter shell automatically one can leverage [[https://direnv.net/][direnv]].  There
+is simple =.envrc= file in the project root directory.  Additionally
+grammar definition directory =tree-sitter-pie/= has it's own direnv
+config so it will switch to the grammar development shell
+automatically.  One has to manually opt in into automatic shell
+selection by running =direnv allow= in the desired directory.
+
+*** cache
+Project uses free [[https://www.cachix.org/][cachix]] cache for nix artifacts (development shell included).  See the details [[https://app.cachix.org/cache/famisoft][here]], but it should be as easy as running:
+
+#+begin_src sh
+cachix use famisoft
+#+end_src

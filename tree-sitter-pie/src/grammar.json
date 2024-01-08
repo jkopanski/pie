@@ -1,0 +1,481 @@
+{
+  "name": "pie",
+  "rules": {
+    "source": {
+      "type": "REPEAT",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "claim"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "define"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_expr"
+          }
+        ]
+      }
+    },
+    "claim": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "STRING",
+          "value": "claim"
+        },
+        {
+          "type": "FIELD",
+          "name": "identifier",
+          "content": {
+            "type": "TOKEN",
+            "content": {
+              "type": "TOKEN",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "PATTERN",
+                        "value": "\\p{Lowercase_Letter}"
+                      },
+                      {
+                        "type": "PATTERN",
+                        "value": "[\\p{Pc}\\p{Pd}\\p{Pf}\\p{Pi}\\p{S}]"
+                      },
+                      {
+                        "type": "PATTERN",
+                        "value": "\\p{Decimal_Number}"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "PATTERN",
+                          "value": "\\p{L}"
+                        },
+                        {
+                          "type": "PATTERN",
+                          "value": "\\p{Decimal_Number}"
+                        },
+                        {
+                          "type": "PATTERN",
+                          "value": "[\\p{Pc}\\p{Pd}\\p{Pf}\\p{Pi}\\p{S}]"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "type",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_expr"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
+    "define": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "STRING",
+          "value": "define"
+        },
+        {
+          "type": "FIELD",
+          "name": "identifier",
+          "content": {
+            "type": "TOKEN",
+            "content": {
+              "type": "TOKEN",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "PATTERN",
+                        "value": "\\p{Lowercase_Letter}"
+                      },
+                      {
+                        "type": "PATTERN",
+                        "value": "[\\p{Pc}\\p{Pd}\\p{Pf}\\p{Pi}\\p{S}]"
+                      },
+                      {
+                        "type": "PATTERN",
+                        "value": "\\p{Decimal_Number}"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "PATTERN",
+                          "value": "\\p{L}"
+                        },
+                        {
+                          "type": "PATTERN",
+                          "value": "\\p{Decimal_Number}"
+                        },
+                        {
+                          "type": "PATTERN",
+                          "value": "[\\p{Pc}\\p{Pd}\\p{Pf}\\p{Pi}\\p{S}]"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "body",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_expr"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
+    "_expr": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "atom"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "function"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "function_type"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "application"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "type"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "variable"
+        }
+      ]
+    },
+    "atom": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "'"
+          },
+          {
+            "type": "REPEAT1",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "PATTERN",
+                  "value": "\\p{L}"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "\\p{Decimal_Number}"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "[\\p{Pc}\\p{Pd}\\p{Pf}\\p{Pi}\\p{S}]"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "function": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "\\"
+            },
+            {
+              "type": "STRING",
+              "value": "λ"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "("
+            },
+            {
+              "type": "FIELD",
+              "name": "arguments",
+              "content": {
+                "type": "REPEAT1",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_expr"
+                }
+              }
+            },
+            {
+              "type": "STRING",
+              "value": ")"
+            }
+          ]
+        },
+        {
+          "type": "FIELD",
+          "name": "body",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_expr"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
+    "function_type": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "->"
+            },
+            {
+              "type": "STRING",
+              "value": "→"
+            }
+          ]
+        },
+        {
+          "type": "FIELD",
+          "name": "domain",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_expr"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "codomain",
+          "content": {
+            "type": "REPEAT1",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_expr"
+            }
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
+    "application": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "FIELD",
+          "name": "function",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_expr"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "arguments",
+          "content": {
+            "type": "REPEAT1",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_expr"
+            }
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
+    "variable": {
+      "type": "TOKEN",
+      "content": {
+        "type": "TOKEN",
+        "content": {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "PATTERN",
+                  "value": "\\p{Lowercase_Letter}"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "[\\p{Pc}\\p{Pd}\\p{Pf}\\p{Pi}\\p{S}]"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "\\p{Decimal_Number}"
+                }
+              ]
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "PATTERN",
+                    "value": "\\p{L}"
+                  },
+                  {
+                    "type": "PATTERN",
+                    "value": "\\p{Decimal_Number}"
+                  },
+                  {
+                    "type": "PATTERN",
+                    "value": "[\\p{Pc}\\p{Pd}\\p{Pf}\\p{Pi}\\p{S}]"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "type": {
+      "type": "TOKEN",
+      "content": {
+        "type": "TOKEN",
+        "content": {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "PATTERN",
+              "value": "\\p{Uppercase_Letter}"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "PATTERN",
+                    "value": "\\p{L}"
+                  },
+                  {
+                    "type": "PATTERN",
+                    "value": "\\p{Decimal_Number}"
+                  },
+                  {
+                    "type": "PATTERN",
+                    "value": "[\\p{Pc}\\p{Pd}\\p{Pf}\\p{Pi}\\p{S}]"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "comment": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": ";.*"
+      }
+    }
+  },
+  "extras": [
+    {
+      "type": "PATTERN",
+      "value": "(\\s|\\f)"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "comment"
+    }
+  ],
+  "conflicts": [],
+  "precedences": [],
+  "externals": [],
+  "inline": [],
+  "supertypes": []
+}
+

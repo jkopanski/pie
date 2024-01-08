@@ -1,0 +1,9 @@
+
+'atom
+( claim one ( -> Atom Atom ) )
+(define one (\ (x) x))
+
+( claim two (→  Atom Atom ) )
+(define two (λ (x) x))
+(one two three 'test)
+

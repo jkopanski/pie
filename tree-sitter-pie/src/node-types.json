@@ -1,0 +1,364 @@
+[
+  {
+    "type": "application",
+    "named": true,
+    "fields": {
+      "arguments": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "application",
+            "named": true
+          },
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "variable",
+            "named": true
+          }
+        ]
+      },
+      "function": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "application",
+            "named": true
+          },
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "variable",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "claim",
+    "named": true,
+    "fields": {
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "application",
+            "named": true
+          },
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "variable",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "define",
+    "named": true,
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "application",
+            "named": true
+          },
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "variable",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "named": true,
+    "fields": {
+      "arguments": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "application",
+            "named": true
+          },
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "variable",
+            "named": true
+          }
+        ]
+      },
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "application",
+            "named": true
+          },
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "variable",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "function_type",
+    "named": true,
+    "fields": {
+      "codomain": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "application",
+            "named": true
+          },
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "variable",
+            "named": true
+          }
+        ]
+      },
+      "domain": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "application",
+            "named": true
+          },
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "variable",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "source",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "application",
+          "named": true
+        },
+        {
+          "type": "atom",
+          "named": true
+        },
+        {
+          "type": "claim",
+          "named": true
+        },
+        {
+          "type": "define",
+          "named": true
+        },
+        {
+          "type": "function",
+          "named": true
+        },
+        {
+          "type": "function_type",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "variable",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "variable",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "(",
+    "named": false
+  },
+  {
+    "type": ")",
+    "named": false
+  },
+  {
+    "type": "->",
+    "named": false
+  },
+  {
+    "type": "\\",
+    "named": false
+  },
+  {
+    "type": "atom",
+    "named": true
+  },
+  {
+    "type": "claim",
+    "named": false
+  },
+  {
+    "type": "comment",
+    "named": true
+  },
+  {
+    "type": "define",
+    "named": false
+  },
+  {
+    "type": "type",
+    "named": true
+  },
+  {
+    "type": "λ",
+    "named": false
+  },
+  {
+    "type": "→",
+    "named": false
+  }
+]
