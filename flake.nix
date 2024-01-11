@@ -50,7 +50,9 @@
          default = rustPkgs.workspaceShell {
            packages = [
              pkgs.rust-analyzer
+             pkgs.rustfmt
              pkgs.tree-sitter
+             pkgs.gnuplot
              pkgs.nodejs_18
              pkgs.nodePackages.typescript-language-server
            ];
