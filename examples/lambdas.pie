@@ -1,0 +1,4 @@
+(lambda () some_ref)
+(λ (x y) y)
+(\ (x y) y)
+(lambda ref)

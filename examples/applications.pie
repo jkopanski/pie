@@ -1,0 +1,7 @@
+(fun arg)
+(fun multiple arguments)
+(fun)
+
+; type level
+(Fun arg)
+(Pair Atom Atom)

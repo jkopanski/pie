@@ -1,0 +1,10 @@
+(claim zero Atom)
+(define zero 'zero)
+
+; type level
+; I think those are illegal in pie?
+; (claim Pair
+;   (→ Atom (→ Atom Atom)))
+; (define Pair
+;   (λ (a a)
+;     (builtin-Pair a a)))
