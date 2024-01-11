@@ -35,10 +35,11 @@ const TYPE =
 	TYPE_HEAD,
 	repeat(IDENTIFIER_BODY)));
 
-const FUNCTION_HEAD =
+const LAMBDA_HEAD =
     choice(
 	"\\",
-        "λ"
+        "λ",
+	token("lambda"),
     );
 
 const FUNCTION_TYPE =
@@ -59,73 +60,74 @@ module.exports = grammar({
     source: $ => repeat(choice(
 	$.claim,
 	$.define,
-	$._expr
+	$.expression
     )),
 
     claim: $ =>
         seq(
 	    "(",
-	    "claim",
-	    field("identifier", token(VARIABLE)),
-	    field("type", $._expr),
+	    token("claim"),
+	    field("identifier", $.identifier),
+	    field("type", $.expression),
 	    ")"
 	),
 
     define: $ =>
         seq(
 	    "(",
-	    "define",
-            field("identifier", token(VARIABLE)),
-	    field("body", $._expr),
+	    token("define"),
+            field("identifier", $.identifier),
+	    field("body", $.expression),
 	    ")"
 	),
 
-    _expr: $ =>
+    expression: $ =>
         choice(
 	  $.atom,
-	  $.function,
-	  $.function_type,
+	  $.lambda,
+	  // $.function_type,
 	  $.application,
-	  $.type,
-	  $.variable,
+	  $.type_identifier,
+	  $.identifier,
         ),
 
-      atom: _ => token(
-	  seq("'", repeat1(IDENTIFIER_BODY))
+      atom: $ => seq(
+	  "'",
+	  field("identifier", $.identifier)
       ),
 
-      function: $ =>
+      lambda: $ =>
 	  seq(
 	      "(",
-	      FUNCTION_HEAD,
+	      LAMBDA_HEAD,
 	      seq(
 		  "(",
-		  field("arguments", repeat1($._expr)),
+		  field("arguments", repeat($.expression)),
 		  ")"
 	      ),
-	      field("body", $._expr),
+	      field("body", $.expression),
 	      ")"
 	  ),
 
-      function_type: $ =>
-	  seq(
-	      "(",
-	      FUNCTION_TYPE,
-	      field("domain", $._expr),
-	      field("codomain", repeat1($._expr)),
-	      ")",
-	  ),
+      // function_type: $ =>
+      // 	  seq(
+      // 	      "(",
+      // 	      FUNCTION_TYPE,
+      // 	      field("domain", $.expression),
+      // 	      field("codomain", repeat1($.expression)),
+      // 	      ")",
+      // 	  ),
 
       application: $ =>
 	  seq(
 	      "(",
-	      field("function", $._expr),
-	      field("arguments", repeat1($._expr)),
+	      field("function", $.expression),
+	      field("arguments", repeat($.expression)),
 	      ")",
 	  ),
 	  
-      variable: _ => token(VARIABLE),
-      type: _ => token(TYPE),
+      identifier: _ => token(VARIABLE),
+      type_identifier: _ => token(TYPE),
       comment: _ => token(COMMENT),
    }
 });

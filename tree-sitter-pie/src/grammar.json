@@ -16,7 +16,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "_expr"
+            "name": "expression"
           }
         ]
       }
@@ -29,59 +29,18 @@
           "value": "("
         },
         {
-          "type": "STRING",
-          "value": "claim"
+          "type": "TOKEN",
+          "content": {
+            "type": "STRING",
+            "value": "claim"
+          }
         },
         {
           "type": "FIELD",
           "name": "identifier",
           "content": {
-            "type": "TOKEN",
-            "content": {
-              "type": "TOKEN",
-              "content": {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "PATTERN",
-                        "value": "\\p{Lowercase_Letter}"
-                      },
-                      {
-                        "type": "PATTERN",
-                        "value": "[\\p{Pc}\\p{Pd}\\p{Pf}\\p{Pi}\\p{S}]"
-                      },
-                      {
-                        "type": "PATTERN",
-                        "value": "\\p{Decimal_Number}"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "REPEAT",
-                    "content": {
-                      "type": "CHOICE",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "\\p{L}"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "\\p{Decimal_Number}"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[\\p{Pc}\\p{Pd}\\p{Pf}\\p{Pi}\\p{S}]"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              }
-            }
+            "type": "SYMBOL",
+            "name": "identifier"
           }
         },
         {
@@ -89,7 +48,7 @@
           "name": "type",
           "content": {
             "type": "SYMBOL",
-            "name": "_expr"
+            "name": "expression"
           }
         },
         {
@@ -106,59 +65,18 @@
           "value": "("
         },
         {
-          "type": "STRING",
-          "value": "define"
+          "type": "TOKEN",
+          "content": {
+            "type": "STRING",
+            "value": "define"
+          }
         },
         {
           "type": "FIELD",
           "name": "identifier",
           "content": {
-            "type": "TOKEN",
-            "content": {
-              "type": "TOKEN",
-              "content": {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "PATTERN",
-                        "value": "\\p{Lowercase_Letter}"
-                      },
-                      {
-                        "type": "PATTERN",
-                        "value": "[\\p{Pc}\\p{Pd}\\p{Pf}\\p{Pi}\\p{S}]"
-                      },
-                      {
-                        "type": "PATTERN",
-                        "value": "\\p{Decimal_Number}"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "REPEAT",
-                    "content": {
-                      "type": "CHOICE",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "\\p{L}"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "\\p{Decimal_Number}"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[\\p{Pc}\\p{Pd}\\p{Pf}\\p{Pi}\\p{S}]"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              }
-            }
+            "type": "SYMBOL",
+            "name": "identifier"
           }
         },
         {
@@ -166,7 +84,7 @@
           "name": "body",
           "content": {
             "type": "SYMBOL",
-            "name": "_expr"
+            "name": "expression"
           }
         },
         {
@@ -175,7 +93,7 @@
         }
       ]
     },
-    "_expr": {
+    "expression": {
       "type": "CHOICE",
       "members": [
         {
@@ -184,11 +102,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "function"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "function_type"
+          "name": "lambda"
         },
         {
           "type": "SYMBOL",
@@ -196,47 +110,32 @@
         },
         {
           "type": "SYMBOL",
-          "name": "type"
+          "name": "type_identifier"
         },
         {
           "type": "SYMBOL",
-          "name": "variable"
+          "name": "identifier"
         }
       ]
     },
     "atom": {
-      "type": "TOKEN",
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "STRING",
-            "value": "'"
-          },
-          {
-            "type": "REPEAT1",
-            "content": {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "PATTERN",
-                  "value": "\\p{L}"
-                },
-                {
-                  "type": "PATTERN",
-                  "value": "\\p{Decimal_Number}"
-                },
-                {
-                  "type": "PATTERN",
-                  "value": "[\\p{Pc}\\p{Pd}\\p{Pf}\\p{Pi}\\p{S}]"
-                }
-              ]
-            }
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "'"
+        },
+        {
+          "type": "FIELD",
+          "name": "identifier",
+          "content": {
+            "type": "SYMBOL",
+            "name": "identifier"
           }
-        ]
-      }
+        }
+      ]
     },
-    "function": {
+    "lambda": {
       "type": "SEQ",
       "members": [
         {
@@ -253,6 +152,13 @@
             {
               "type": "STRING",
               "value": "λ"
+            },
+            {
+              "type": "TOKEN",
+              "content": {
+                "type": "STRING",
+                "value": "lambda"
+              }
             }
           ]
         },
@@ -267,10 +173,10 @@
               "type": "FIELD",
               "name": "arguments",
               "content": {
-                "type": "REPEAT1",
+                "type": "REPEAT",
                 "content": {
                   "type": "SYMBOL",
-                  "name": "_expr"
+                  "name": "expression"
                 }
               }
             },
@@ -285,52 +191,7 @@
           "name": "body",
           "content": {
             "type": "SYMBOL",
-            "name": "_expr"
-          }
-        },
-        {
-          "type": "STRING",
-          "value": ")"
-        }
-      ]
-    },
-    "function_type": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "("
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "->"
-            },
-            {
-              "type": "STRING",
-              "value": "→"
-            }
-          ]
-        },
-        {
-          "type": "FIELD",
-          "name": "domain",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_expr"
-          }
-        },
-        {
-          "type": "FIELD",
-          "name": "codomain",
-          "content": {
-            "type": "REPEAT1",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_expr"
-            }
+            "name": "expression"
           }
         },
         {
@@ -351,17 +212,17 @@
           "name": "function",
           "content": {
             "type": "SYMBOL",
-            "name": "_expr"
+            "name": "expression"
           }
         },
         {
           "type": "FIELD",
           "name": "arguments",
           "content": {
-            "type": "REPEAT1",
+            "type": "REPEAT",
             "content": {
               "type": "SYMBOL",
-              "name": "_expr"
+              "name": "expression"
             }
           }
         },
@@ -371,7 +232,7 @@
         }
       ]
     },
-    "variable": {
+    "identifier": {
       "type": "TOKEN",
       "content": {
         "type": "TOKEN",
@@ -419,7 +280,7 @@
         }
       }
     },
-    "type": {
+    "type_identifier": {
       "type": "TOKEN",
       "content": {
         "type": "TOKEN",
