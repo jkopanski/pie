@@ -1,34 +1,25 @@
 extern crate pie;
 extern crate rustyline;
 
-use std::{
-    format,
-    println,
-    borrow::Cow::{
-	Borrowed,
-	Owned,
-    },
-};
 use miette::Report;
 use rustyline::{
-    Cmd,
-    CompletionType,
-    Context,
-    Editor,
-    EditMode,
-    KeyEvent,
     completion::{Completer, FilenameCompleter, Pair},
     config::Config,
     error::ReadlineError,
     highlight::{Highlighter, MatchingBracketHighlighter},
-    validate::{Validator, MatchingBracketValidator},
     hint::{Hinter, HistoryHinter},
+    validate::{MatchingBracketValidator, Validator},
+    Cmd, CompletionType, Context, EditMode, Editor, KeyEvent,
 };
 use rustyline_derive::Helper;
+use std::{
+    borrow::Cow::{Borrowed, Owned},
+    format, println,
+};
 use xdg::{self, BaseDirectories};
 
-use pie::error as error;
-use pie::parser as parser;
+use pie::error;
+use pie::parser;
 
 #[derive(Helper)]
 struct PieHelper {
@@ -43,12 +34,12 @@ impl Completer for PieHelper {
     type Candidate = Pair;
 
     fn complete(
-	&self,
-	line: &str,
-	pos: usize,
-	ctx: &Context<'_>,
+        &self,
+        line: &str,
+        pos: usize,
+        ctx: &Context<'_>,
     ) -> rustyline::Result<(usize, Vec<Pair>)> {
-	self.completer.complete(line, pos, ctx)
+        self.completer.complete(line, pos, ctx)
     }
 }
 
@@ -56,7 +47,7 @@ impl Hinter for PieHelper {
     type Hint = String;
 
     fn hint(&self, line: &str, pos: usize, ctx: &Context<'_>) -> Option<String> {
-	self.hinter.hint(line, pos, ctx)
+        self.hinter.hint(line, pos, ctx)
     }
 }
 
@@ -66,36 +57,36 @@ impl Highlighter for PieHelper {
         prompt: &'p str,
         default: bool,
     ) -> std::borrow::Cow<'b, str> {
-	if default {
-	    Borrowed(&self.colored_prompt)
-	} else {
-	    Borrowed(prompt)
-	}
+        if default {
+            Borrowed(&self.colored_prompt)
+        } else {
+            Borrowed(prompt)
+        }
     }
 
     fn highlight_hint<'h>(&self, hint: &'h str) -> std::borrow::Cow<'h, str> {
-	Owned("\x1b[1m".to_owned() + hint + "\x1b[m")
+        Owned("\x1b[1m".to_owned() + hint + "\x1b[m")
     }
 
     fn highlight<'l>(&self, line: &'l str, pos: usize) -> std::borrow::Cow<'l, str> {
-	self.highlighter.highlight(line, pos)
+        self.highlighter.highlight(line, pos)
     }
 
     fn highlight_char(&self, line: &str, pos: usize, forced: bool) -> bool {
-	self.highlighter.highlight_char(line, pos, forced)
+        self.highlighter.highlight_char(line, pos, forced)
     }
 }
 
 impl Validator for PieHelper {
     fn validate(
-	&self,
-	ctx: &mut rustyline::validate::ValidationContext
+        &self,
+        ctx: &mut rustyline::validate::ValidationContext,
     ) -> rustyline::Result<rustyline::validate::ValidationResult> {
-	self.validator.validate(ctx)
+        self.validator.validate(ctx)
     }
 
     fn validate_while_typing(&self) -> bool {
-	self.validator.validate_while_typing()
+        self.validator.validate_while_typing()
     }
 }
 
@@ -110,20 +101,20 @@ fn main() -> error::Result<()> {
         .auto_add_history(true)
         .build();
     let helper = PieHelper {
-	completer: FilenameCompleter::new(),
-	highlighter: MatchingBracketHighlighter::new(),
-	hinter: HistoryHinter::new(),
-	colored_prompt: "".to_owned(),
-	validator: MatchingBracketValidator::new(),
+        completer: FilenameCompleter::new(),
+        highlighter: MatchingBracketHighlighter::new(),
+        hinter: HistoryHinter::new(),
+        colored_prompt: "".to_owned(),
+        validator: MatchingBracketValidator::new(),
     };
     let mut rl = Editor::with_config(config)?;
     rl.set_helper(Some(helper));
     rl.bind_sequence(KeyEvent::alt('N'), Cmd::HistorySearchForward);
     rl.bind_sequence(KeyEvent::alt('P'), Cmd::HistorySearchBackward);
-    let res  = rl.load_history(&history_file);
+    let res = rl.load_history(&history_file);
 
     if let Result::Err(err) = res {
-	println!("Couldn't load previous history: {}.", err);
+        println!("Couldn't load previous history: {}.", err);
     }
 
     println!();
@@ -132,47 +123,42 @@ fn main() -> error::Result<()> {
     println!();
 
     let prompt = format!("ΛΠ ≫ ");
-    rl.helper_mut()
-	.expect("No helper")
-	.colored_prompt = format!("\x1b[1;32m{}\x1b[0m", prompt);
+    rl.helper_mut().expect("No helper").colored_prompt = format!("\x1b[1;32m{}\x1b[0m", prompt);
 
-    for readline in rl.iter (&prompt) {
+    for readline in rl.iter(&prompt) {
         match readline {
-	    Ok(line) => {
-		if "quit" == line {
-		    break;
-		}
+            Ok(line) => {
+                if "quit" == line {
+                    break;
+                }
 
-		match parser::parse(line.clone()) {
-		    Ok(module) => {
-			for stmt in module.statements.iter() {
-			    println!("{stmt:#?}");
-			}
-		    },
+                match parser::parse(line.clone()) {
+                    Ok(module) => {
+                        for stmt in module.statements.iter() {
+                            println!("{stmt:#?}");
+                        }
+                    }
 
-		    Err(err) => {
-			let report = Report::new(err).with_source_code(line);
-			println!("{:?}", report);
-		    }
-		}
-	    },
+                    Err(err) => {
+                        let report = Report::new(err).with_source_code(line);
+                        println!("{:?}", report);
+                    }
+                }
+            }
 
-	    Err(err) => {
-		match err {
-		    ReadlineError::Interrupted =>
-			println!("CTRL-C"),
+            Err(err) => {
+                match err {
+                    ReadlineError::Interrupted => println!("CTRL-C"),
 
-		    ReadlineError::Eof =>
-			println!("CTRL-D"),
+                    ReadlineError::Eof => println!("CTRL-D"),
 
-		    e =>
-			println!("{:?}", e)
-		}
-	        break;
-	    }
-	}
+                    e => println!("{:?}", e),
+                }
+                break;
+            }
+        }
     }
 
-  rl.append_history(&history_file)?;
-  Ok(())
+    rl.append_history(&history_file)?;
+    Ok(())
 }
