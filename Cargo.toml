@@ -8,14 +8,22 @@ edition = "2021"
 [lib]
 name = "pie"
 path = "lib/pie.rs"
+bench = false
 
 [[bin]]
 name = "repl"
 path = "repl/main.rs"
+bench = false
 
 [[bin]]
 name = "pie"
 path = "src/main.rs"
+bench = false
+
+[[bench]]
+name = "bench"
+harness = false
+path = "bench/main.rs"
 
 [dependencies]
 clap = { version = "4.4.11", features = ["derive", "unicode", "env"] }
@@ -26,3 +34,6 @@ thiserror = "1.0.51"
 tree-sitter = "0.20.10"
 tree-sitter-pie = { path = "tree-sitter-pie" }
 xdg = "2.5.2"
+
+[dev-dependencies]
+criterion = "0.5.1"
