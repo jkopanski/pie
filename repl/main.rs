@@ -1,5 +1,4 @@
 extern crate pie;
-extern crate rustyline;
 
 use miette::Report;
 use rustyline::{
@@ -21,7 +20,7 @@ use std::{
 };
 use xdg;
 
-use pie::error;
+use pie::error::Result;
 use pie::parser;
 
 #[derive(Helper)]
@@ -93,7 +92,7 @@ impl Validator for PieHelper {
     }
 }
 
-fn main() -> error::Result<()> {
+fn main() -> Result<()> {
     let xdg_dirs = xdg::BaseDirectories::with_prefix("pie")?;
     let history_file = xdg_dirs.place_state_file("history")?;
 
@@ -116,7 +115,7 @@ fn main() -> error::Result<()> {
     rl.bind_sequence(KeyEvent::alt('P'), Cmd::HistorySearchBackward);
     let res = rl.load_history(&history_file);
 
-    if let Result::Err(err) = res {
+    if let std::result::Result::Err(err) = res {
         println!("Couldn't load previous history: {}.", err);
     }
 

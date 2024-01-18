@@ -1,4 +1,4 @@
-use crate::parser::ParseError;
+use crate::parser::ts::ParseError;
 use miette::Diagnostic;
 use rustyline::error::ReadlineError;
 use thiserror::Error;

@@ -7,3 +7,9 @@
 (define two (λ (x) x))
 (one two three 'test)
 
+; weird comments
+(; coment1
+a ; comment 2
+; comment 3
+b ; comment 4
+) ; comment 5
