@@ -1,6 +1,7 @@
 use crate::syntax;
 use miette::{Diagnostic, SourceOffset, SourceSpan};
 use std::{
+    borrow::Cow,
     boxed::Box,
     collections::HashMap,
     io::{Cursor, Read, Seek, SeekFrom},
@@ -108,7 +109,6 @@ fn expect(expected: &'static str, node: &Node) -> Result<SourceSpan> {
 }
 
 fn parse_source(
-    source: impl AsRef<[u8]>,
     node: &Node,
     read: &mut (impl Read + Seek),
 ) -> Result<syntax::Source<SourceSpan>> {
@@ -121,7 +121,6 @@ fn parse_source(
         statements.push(stmt)
     }
     Ok(syntax::Source {
-        source: std::str::from_utf8(source.as_ref())?.to_string(),
         statements,
         ann: loc,
     })
@@ -343,16 +342,13 @@ pub fn parse_many<'a, T, S: Read + Seek>(
     nodes.map(|node| parser(&node, cursor)).collect()
 }
 
-pub fn parse<T>(text: T) -> Result<syntax::Source<SourceSpan>>
-where
-    T: AsRef<[u8]> + Clone,
-{
+pub fn parse(text: &mut Cow<str>) -> Result<syntax::Source<SourceSpan>> {
     let mut parser = tree_sitter::Parser::new();
     parser.set_language(pie::language())?;
 
-    let tree = parser.parse(text.clone(), None).unwrap();
-    let mut cursor = Cursor::new(text.clone());
-    parse_source(text, &tree.root_node(), &mut cursor)
+    let tree = parser.parse(text.to_mut(), None).unwrap();
+    let mut cursor = Cursor::new(text.to_mut());
+    parse_source(&tree.root_node(), &mut cursor)
 }
 
 // extracting data from source

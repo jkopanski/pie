@@ -1,6 +1,6 @@
-use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
+use criterion::{criterion_group, criterion_main, BatchSize, BenchmarkId, Criterion};
 use pie::parser::parse;
-use std::{format, fs};
+use std::{borrow::Cow, format, fs};
 
 fn bench_parsing(c: &mut Criterion) {
     let filenames = ["applications", "atoms", "declarations", "lambdas"];
@@ -15,11 +15,13 @@ fn bench_parsing(c: &mut Criterion) {
     let mut group = c.benchmark_group("parsing");
 
     for (i, source) in sources.iter().enumerate() {
-        group.bench_with_input(
-            BenchmarkId::from_parameter(filenames[i]),
-            source,
-            |b, source| b.iter(|| parse(source)),
-        );
+        group.bench_function(BenchmarkId::from_parameter(filenames[i]), |b| {
+            b.iter_batched_ref(
+                || -> Cow<str> { Cow::from(source) },
+                parse,
+                BatchSize::SmallInput,
+            );
+        });
     }
     group.finish();
 }

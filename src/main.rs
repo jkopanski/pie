@@ -2,8 +2,7 @@ extern crate pie;
 use clap::Parser;
 use miette::{IntoDiagnostic, Report, Result};
 use pie::parser;
-use std::path::PathBuf;
-use std::{fs, println};
+use std::{borrow::Cow, fs, path::PathBuf, println};
 
 #[derive(Parser)]
 #[command(name = "pie lang")]
@@ -23,9 +22,10 @@ struct Opts {
 fn main() -> Result<()> {
     let opts = Opts::parse();
 
-    let source = fs::read_to_string(opts.file).into_diagnostic()?;
+    let mut source = Cow::from(fs::read_to_string(opts.file).into_diagnostic()?);
+
     let prog =
-        parser::parse(source.clone()).map_err(|err| Report::new(err).with_source_code(source))?;
+        parser::parse(&mut source).map_err(|err| Report::new(err).with_source_code(source))?;
 
     for stmt in prog.statements {
         println!("{stmt:#?}");

@@ -13,10 +13,13 @@ use rustyline::{
 };
 use rustyline_derive::Helper;
 use std::{
-    borrow::Cow::{Borrowed, Owned},
+    borrow::{
+        Cow,
+        Cow::{Borrowed, Owned},
+    },
     format, println,
 };
-use xdg::{self, BaseDirectories};
+use xdg;
 
 use pie::error;
 use pie::parser;
@@ -131,8 +134,9 @@ fn main() -> error::Result<()> {
                 if "quit" == line {
                     break;
                 }
+                let mut source = Cow::from(line);
 
-                match parser::parse(line.clone()) {
+                match parser::parse(&mut source) {
                     Ok(module) => {
                         for stmt in module.statements.iter() {
                             println!("{stmt:#?}");
@@ -140,7 +144,7 @@ fn main() -> error::Result<()> {
                     }
 
                     Err(err) => {
-                        let report = Report::new(err).with_source_code(line);
+                        let report = Report::new(err).with_source_code(source);
                         println!("{:?}", report);
                     }
                 }

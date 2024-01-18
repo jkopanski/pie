@@ -62,7 +62,6 @@ pub enum Statement<Ann = ()> {
 
 #[derive(Clone, Debug)]
 pub struct Source<Ann = ()> {
-    pub source: String,
     pub statements: Vec<Statement<Ann>>,
     pub ann: Ann,
 }
